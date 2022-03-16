@@ -1,3 +1,4 @@
+import { __prop__ } from './constants'
 // import { sendMail } from './../utils/sendMail'
 // import { Context } from './graphql/schema/typeDefs/Context';
 import { RequestApp } from './../request/index'
@@ -33,7 +34,7 @@ export default class App {
     this.startServerOnPort()
     this.app.use(
       cors({
-        origin: 'http://localhost:3000',
+        origin: __prop__ ? process.env.CORS_PRO : process.env.CORS_DEV,
         credentials: true,
       })
     )

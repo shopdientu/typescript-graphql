@@ -1,0 +1,1 @@
+{"version":3,"file":"connectError.js","sourceRoot":"","sources":["../../../src/core/middleware/connectError.ts"],"names":[],"mappings":";;;AACA,2CAAuC;AAEvC,MAAa,YAAa,SAAQ,qBAAS;IAGzC,YAAmB,GAAW,EAAS,UAAuB;QAC5D,KAAK,CAAC,GAAG,CAAC,CAAA;QADO,QAAG,GAAH,GAAG,CAAQ;QAAS,eAAU,GAAV,UAAU,CAAa;IAE9D,CAAC;CACF;AAND,oCAMC"}

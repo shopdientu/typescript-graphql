@@ -1,6 +1,5 @@
 import { Upvote } from './../../../databases/postgres/entity/Upvote'
 import { PaginatedPosts } from './../typeDefs/PaginatedPosts'
-import { AppError } from './../../../Error/index'
 import { User } from './../../../databases/postgres/entity/User'
 import { checkAuth } from './../../../middleware/checkAuth'
 import { Post } from './../../../databases/postgres/entity/Post'
@@ -44,12 +43,12 @@ export class PostResolver {
   }
 
   @FieldResolver()
-  async user(@Root() { userId }: Post): Promise<User> {
-    const user = await User.findOne(userId)
-    if (!user) {
-      throw new AppError('Not match user with post', 500)
-    }
-    return user
+  async user(
+    @Root() { userId }: Post,
+    @Ctx() { dataLoaders: { userLoader } }: Context
+  ): Promise<User | undefined> {
+    // return await User.findOne(userId)
+    return await userLoader.load(userId)
   }
 
   @FieldResolver((_return) => Int)
@@ -60,10 +59,13 @@ export class PostResolver {
       req: {
         session: { userId },
       },
+      dataLoaders: { voteTypeLoader },
     }: Context
   ): Promise<number> {
     if (!userId) return 0
-    const existingVote = await Upvote.findOne({ postId: root.id, userId })
+    // const existingVote = await Upvote.findOne({ postId: root.id, userId })
+    const existingVote = await voteTypeLoader.load({ postId: root.id, userId: userId })
+
     return existingVote ? existingVote.value : 0
   }
 

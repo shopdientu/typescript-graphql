@@ -1,3 +1,5 @@
+import { __prop__ } from './../constants'
+import { buildDataLoaders } from './../../utils/dataLoaders'
 import { Context } from './schema/typeDefs/Context'
 import { PostResolver } from './schema/resolvers/PostResolver'
 import { UserResolver } from './schema/resolvers/UserResolver'
@@ -14,6 +16,7 @@ import { Connection } from 'typeorm'
 
 export const connectApolloServer = async (app: Express, connect: Promise<Connection>) => {
   const connPostgres = await connect
+  if (__prop__) await connPostgres.runMigrations()
   console.log('starting ApolloServer ... ')
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
@@ -23,7 +26,12 @@ export const connectApolloServer = async (app: Express, connect: Promise<Connect
       console.log(e)
       throw new AppError('Error Graphql Server fail build Schema', StatusCodes.BAD_GATEWAY)
     }),
-    context: ({ res, req }): Context => ({ res, req, connect: connPostgres }),
+    context: ({ res, req }): Context => ({
+      res,
+      req,
+      connect: connPostgres,
+      dataLoaders: buildDataLoaders(),
+    }),
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
   })
   // console.log(app)

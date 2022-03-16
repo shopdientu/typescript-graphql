@@ -1,1 +1,1 @@
-export const isProduction: boolean = process.env.NODE_ENV === 'production'
+export const __prop__: boolean = process.env.NODE_ENV === 'production'

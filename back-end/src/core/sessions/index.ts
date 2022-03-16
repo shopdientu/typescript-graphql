@@ -1,6 +1,6 @@
 import MongoStore from 'connect-mongo'
 import session from 'express-session'
-import { isProduction } from '../constants'
+import { __prop__ } from '../constants'
 
 export const sessionMongoApp = () => {
   console.log('session created')
@@ -12,8 +12,9 @@ export const sessionMongoApp = () => {
     cookie: {
       maxAge: 60 * 60 * 1000 * 24,
       httpOnly: true,
-      secure: isProduction,
+      secure: __prop__,
       sameSite: 'lax',
+      domain: __prop__ ? '.vercel.app' : undefined,
     },
     secret: process.env.MONGO_SESSION as string,
     saveUninitialized: false,
