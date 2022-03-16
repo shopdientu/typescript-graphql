@@ -1,8 +1,0 @@
-query Post($id: String!) {
-  post(id: $id) {
-    id
-    text
-    title
-    userId
-  }
-}
